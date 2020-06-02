@@ -1,11 +1,16 @@
 <template>
     <div class="child-task-page">
-        <h1>This is task for child</h1>
+        <exercise :exercise="task.exercises[0]" />
     </div>
 </template>
 <script>
+    import Exercise from '@front/components/Exercise';
+
     export default {
         name: 'ChildTaskPage',
-        props: ['id'],
+        props: ['task'],
+        components: {
+            Exercise,
+        }
     }
 </script>

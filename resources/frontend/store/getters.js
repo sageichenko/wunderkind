@@ -12,5 +12,13 @@ const getters = {
         state.tasksList = state.allTasksList;
     },
     tasks: state => state.tasksList,
+    task: state => taskId => state.allTasksList.reduce(
+        (acc, task) => {
+            if (task.id === taskId) {
+                acc = task;
+            }
+
+            return acc;
+        }, {})
 };
 export default getters;

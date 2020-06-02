@@ -1,0 +1,79 @@
+@import '_variables';
+@import 'mixins/typography';
+
+*,
+*::before,
+*::after {
+    font-family: 'Montserrat', sans-serif;
+    color: $black;
+}
+
+body {
+    @include font-regular();
+}
+
+.title {
+    margin: 1rem 0;
+
+    @include font-semibold(3rem, 130%);
+
+    @media #{$tablet} {
+        @include font-semibold(4rem, 120%);
+    }
+
+    @media #{$largeDesktop} {
+        margin: 2rem 0;
+        @include font-semibold(6rem, 130%);
+    }
+}
+
+.subtitle {
+    margin: 1rem 0 2rem;
+
+    @include font-semibold(3rem, 130%);
+
+    @media #{$tablet} {
+        margin: 2rem 0 4rem;
+        @include font-semibold(4rem, 120%);
+    }
+}
+
+.subtitle-lvl-3 {
+    margin: 1rem 0 2rem;
+
+    @include font-semibold(1.8rem, 140%);
+
+    @media #{$tablet} {
+        @include font-semibold(2.4rem, 130%);
+    }
+
+    @media #{$largeDesktop} {
+        font-size: 3rem;
+    }
+}
+
+.subtitle-lvl-4 {
+    margin: .5rem 0;
+
+    @include font-semibold(1.8rem);
+
+    @media #{$tablet} {
+        @include font-semibold(2.4rem, 130%);
+    }
+}
+
+.text {
+    @include font-regular(1.8rem);
+
+    &._important {
+        @include font-semibold(1.8rem);
+    }
+}
+
+.caption {
+    @include font-regular(1.4rem);
+
+    &._important {
+        @include font-semibold(1.2rem);
+    }
+}

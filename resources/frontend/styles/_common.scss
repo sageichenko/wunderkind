@@ -1,0 +1,18 @@
+body {
+    background: $muted-orange-yellow;
+}
+
+.grid {
+    max-width: 144rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    overflow: hidden;
+
+    @media #{$tablet} {
+        padding: 0 3rem;
+    }
+
+    @media #{$desktop} {
+        padding: 0 6rem;
+    }
+}

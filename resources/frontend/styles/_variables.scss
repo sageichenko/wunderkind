@@ -1,0 +1,27 @@
+// Colors
+
+$lemon-yellow: #FFED00;
+$yellow: #FFDD00;
+$orange-yellow: #ffc100;
+$orange: #f78d04;
+$muted-orange-yellow: #ffe894;
+
+$black: #000000;
+$dark-grey: #262626;
+$dark-grey-2: #808080;
+$grey: #CCCCCC;
+$muted-grey: #E5E5E5;
+$light-grey: #F2F2F2;
+$light-grey-2: #FAFAFA;
+$white: #FFFFFF;
+
+
+// Media
+$phone-strict: "only screen and (max-width: 767px)";
+$phone475: "only screen and (min-width: 475px)";
+$tablet: "only screen and (min-width: 768px)";
+$bigTablet: "only screen and (min-width: 992px)";
+$tablet-strict: "only screen and (min-width: 768px) and (max-width: 1023px)";
+$desktop: "only screen and (min-width: 1024px)";
+$mediumDesktop: "only screen and (min-width: 1200px)";
+$largeDesktop: "only screen and (min-width: 1440px)";

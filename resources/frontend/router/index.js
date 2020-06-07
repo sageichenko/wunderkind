@@ -61,14 +61,14 @@ export const constantRoutes = [
         ],
     },
     {
-        path: '/task/:id',
+        path: '/task/:id?/:action',
         component: Layout,
         redirect: '/task',
         children: [
             {
                 path: '',
                 component: () => import('../views/task/index'),
-                props: (route) => ({ id: route.params.id }),
+                props: (route) => ({ id: route.params.id, action: route.params.action }),
                 name: 'TaskPage',
             },
         ],

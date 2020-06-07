@@ -1,10 +1,15 @@
 <template>
     <div class="tasks-page">
-        <h1>Hello, Monster!</h1>
+        <tasks-list />
     </div>
 </template>
 <script>
+    import TasksList from "@front/components/TasksList";
+
     export default {
         name: 'TasksPage',
+        components: {
+            TasksList,
+        }
     }
 </script>

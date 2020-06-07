@@ -21,6 +21,7 @@
         padding-top: 2rem;
         padding-bottom: 5rem;
         margin-top: 5rem;
+        margin-bottom: 10rem;
         background: $white;
         border-radius: 3rem;
     }

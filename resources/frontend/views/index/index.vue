@@ -1,8 +1,8 @@
 <template>
     <div class="index-page">
-        <component :is="userPage" />
-        <tasks-list />
-        <test />
+        <router-link :to="{name: 'TasksPage'}" >
+            здесь должна быть логинка, но пока просто посмотрите задания
+        </router-link>
     </div>
 </template>
 <script>

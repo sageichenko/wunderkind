@@ -1,85 +1,138 @@
 <template>
     <div class="exercise">
-
-        <container
-            group-name="exercise"
-            orientation="horizontal"
-            class="exercise__inputs"
-            behaviour="copy"
-            :get-child-payload="itemIndex => getChildPayload('inputs', itemIndex)"
-            @drop="onDrop('inputs', $event)"
+        <div class="exercise__condition">
+            {{ exercise.condition }}
+        </div>
+        <component
+            v-if="!exercise.done"
+            :is="exerciseType"
+            :inputs="exercise.inputs"
+            @result-update="updateResult"
+        />
+        <div
+            v-else
         >
-            <draggable v-for="input in inputs" :key="input">
-                <div class="exercise__draggable-item">
-                    {{ input.content.text }}
-                </div>
-            </draggable>
-        </container>
-        <container
-            group-name="exercise"
-            orientation="horizontal"
-            class="exercise__result"
-            remove-on-drop-out="true"
-            :get-child-payload="itemIndex => getChildPayload('result', itemIndex)"
-            @drop="onDrop('result', $event)"
-        >
-            <draggable v-for="item in result" :key="item">
-                <div class="exercise__draggable-item">
-                    {{ item.content.text }}
-                </div>
-            </draggable>
-        </container>
+            Ты уже решил эту задачу!
+        </div>
+        <div class="exercise__actions">
+            <div
+                class="exercise__button exercise__back-button"
+                @click="returnBack"
+            >
+                Вернуться
+            </div>
+            <div
+                v-if="!exercise.done"
+                class="exercise__button exercise__answer-button"
+                @click="confirmAnswer"
+            >
+                Ответить!
+            </div>
+            <div
+                v-else
+                class="exercise__button exercise__next-button"
+                @click="next"
+            >
+                Дальше
+            </div>
+        </div>
     </div>
 </template>
 <script>
-    import { Container, Draggable } from 'vue-smooth-dnd'
-    import { applyDrag, generateItems } from '../utils/helpers'
+    import Order from '@front/components/exercisies/Order';
+    import Combination from '@front/components/exercisies/Combination';
+    import Find from '@front/components/exercisies/Find';
 
     export default {
         name: 'Exercise',
         props: ['exercise'],
         components: {
-            Container,
-            Draggable,
+            Order,
+            Combination,
+            Find,
         },
         data() {
             return {
-                inputs: [],
                 result: [],
             };
         },
         created() {
             this.inputs = [...this.exercise.inputs];
         },
-        methods: {
-            getChildPayload (containerId, itemIndex) {
-                return this[containerId][itemIndex]
+        computed: {
+            exerciseType() {
+                switch(this.exercise.type) {
+                    case 'combination': return 'Combination';
+                    case 'order': return 'Order';
+                    case 'find': return 'Find';
+                }
             },
+        },
+        methods: {
+            confirmAnswer() {
+                if (this.checkAnswer()) {
+                    this.$set(this.exercise, 'answer', this.result)
+                    this.$emit('right-answer');
+                } else {
+                    this.$emit('wrong-answer');
+                }
+            },
+            updateResult(newResult) {
+                this.result = [...newResult];
+            },
+            checkAnswer() {
+                return this.exercise.results.some((result) => {
+                    if (result.length !== this.result.length) return false;
 
-            onDrop(containerId, dropResult) {
-                this.$set(this, containerId, applyDrag(this[containerId], dropResult));
-                console.log(containerId, this);
-            }
+                    return result.every((resultItem, index) => resultItem === this.result[index].id);
+                });
+            },
+            returnBack() {
+                this.$emit('back');
+            },
+            next() {
+                this.$emit('next');
+            },
         }
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     @import '@front/styles/_variables';
+    @import '@front/styles/mixins/_typography';
 
     .exercise {
-        &__inputs,
-        &__result {
-            padding: 4rem;
-            border-radius: 4rem;
-            box-shadow: inset 0 0 .5rem rgba($black, .1);
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+
+        &__condition {
+            margin-bottom: 3rem;
+            @include font-regular(1.6rem);
         }
 
-        &__draggable-item {
-            margin: 1rem;
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__button {
+            display: inline-block;
             padding: 2rem;
+            @include font-semibold(2rem);
+            color: $white;
             border-radius: 2rem;
-            border: .3rem solid $orange;
-            font-size: 1.8rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        &__answer-button,
+        &__next-button {
+            background: $green;
+        }
+
+        &__back-button {
+            background: $red-orange;
         }
     }
+
 </style>

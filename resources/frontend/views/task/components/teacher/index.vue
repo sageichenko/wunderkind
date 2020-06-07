@@ -1,22 +1,22 @@
 <template>
-    <div class="child-task-page">
-        <div class="child-task-page__header">
-            <span class="child-task-page__back-link" @click="returnBack">
+    <div class="teacher-task-page">
+        <div class="teacher-task-page__header">
+            <span class="teacher-task-page__back-link" @click="returnBack">
                 вернуться
             </span>
-            <h1 class="child-task-page__title title">{{ task.title }}</h1>
+            <input v-model="task.title" class="teacher-task-page__title title" placeholder="Название задания">
         </div>
-        <task :exercises="task.exercises" />
+        <edit-task :exercises="task.exercises" />
     </div>
 </template>
 <script>
-    import Task from '@front/components/Task';
+    import EditTask from '@front/components/EditTask';
 
     export default {
-        name: 'ChildTaskPage',
+        name: 'TeacherTaskPage',
         props: ['task'],
         components: {
-            Task,
+            EditTask,
         },
         methods: {
             returnBack() {
@@ -26,6 +26,7 @@
     }
 </script>
 <style lang="scss">
+    @import '@front/styles/_variables';
     @import '@front/styles/mixins/_typography';
 
     .teacher-task-page {
@@ -35,7 +36,17 @@
         }
 
         &__title {
+            margin-bottom: 3rem;
+            padding: 1rem;
             text-align: center;
+            box-shadow: inset 0 0 1rem rgba($black, .15);
+            border-radius: 1rem;
+            border: none;
+            outline: none;
+
+            &::placeholder {
+                color: $grey;
+            }
         }
 
         &__back-link {

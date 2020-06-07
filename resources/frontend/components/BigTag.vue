@@ -70,7 +70,7 @@
         }
 
         &__text {
-            @include font-bold(1.4rem, 144%);
+            @include font-bold(1.6rem, 144%);
             background: transparent;
             color: inherit;
         }

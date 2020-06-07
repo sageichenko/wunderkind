@@ -1,32 +1,55 @@
 <template>
     <div class="task-page">
-        <h1 class="task-page__title title">{{ task.title }}</h1>
         <component :task="task" :is="userPage" />
     </div>
 </template>
 <script>
-    import ChildPage from './components/child/index'
+    import ChildPage from './components/child/index';
+    import TeacherPage from './components/teacher/index';
 
     export default {
         name: 'TasksPage',
-        props: ['id'],
+        props: ['id', 'action'],
         components: {
             ChildPage,
+            TeacherPage
+        },
+        data() {
+            return {
+                newTaskTemplate: {
+                    title: '',
+                    categoryId: '',
+                    categoryImg: '',
+                    authorId: '',
+                    exercises: [],
+                }
+            };
         },
         computed: {
             userPage() {
-                return 'child-page';
+                return this.action === 'edit' || this.action === 'create' ? 'teacher-page' : 'child-page';
             },
             task() {
-                return this.$store.getters.task(this.id);
+                if (this.id) {
+                    return this.$store.getters.task;
+                } else {
+                    this.$set(this.newTaskTemplate, 'authorId', this.user.id)
+                    return this.newTaskTemplate;
+                }
+            },
+            user() {
+                return this.$store.getters.currentUser;
             }
+        },
+        created() {
+            if (this.id) {
+                this.getTask();
+            }
+        },
+        methods: {
+            getTask() {
+                this.$store.dispatch('getTask', this.id);
+            },
         },
     }
 </script>
-<style lang="scss">
-    .task-page {
-        &__title {
-            text-align: center;
-        }
-    }
-</style>

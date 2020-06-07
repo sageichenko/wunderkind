@@ -1,7 +1,24 @@
 <template>
     <div class="tasks">
-        <tabs :options="tabs" @change="updateTasks" />
-        <div class="tasks-list">
+        <div
+            v-if="user.access === 'teacher'"
+            class="tasks__actions">
+            <div
+                class="tasks__my-tasks-checkbox"
+                :class="`${onlyMyTask ? '_checked' : ''}`"
+                @click="onlyMyTask = !onlyMyTask"
+            >
+                Показывать только мои задания
+            </div>
+            <div
+                class="tasks__button tasks__new-task-button"
+                @click="createTask"
+            >
+                Создать задание
+            </div>
+        </div>
+        <tabs :options="tabs" @change="setCategoryId" />
+        <div class="task-list">
             <div
                 v-for="task in tasks"
                 :key="task"
@@ -23,40 +40,120 @@
         },
         data() {
             return {
-                tabs: {
-                    'all': { text: 'Все', img: '/frontend/assets/images/offices/taganrog/mini.jpg', active: true },
-                    'math': { text: 'Математика', img: '/frontend/assets/images/offices/rostov/mini.jpg', active: false },
-                    'english': { text: 'Английский', img: '/frontend/assets/images/offices/rostov/mini.jpg', active: false },
-                    'logic': { text: 'Логические', img: '/frontend/assets/images/offices/rostov/mini.jpg', active: false },
-                },
+                onlyMyTask: false,
+                categoryId: null,
             };
         },
         computed: {
+            user() {
+                return this.$store.getters.currentUser;
+            },
             tasks() {
                 return this.$store.getters.tasks;
-            }
+            },
+            categories() {
+                return this.$store.getters.categories;
+            },
+            tabs() {
+               const tabs = {};
+
+               tabs.all = { text: 'Все', img: '/frontend/assets/images/offices/taganrog/mini.jpg', active: true }
+
+               for (const categoryId in this.categories) {
+                   if (!this.categories.hasOwnProperty(categoryId)) {
+                       return;
+                   }
+
+                   tabs[categoryId] = {
+                       text: this.categories[categoryId].title,
+                       img: this.categories[categoryId].img,
+                       active: false,
+                   }
+               }
+
+               return tabs;
+            },
         },
         created() {
-            this.getDefaultTasks()
+            this.getDefaultTasks();
+        },
+        watch: {
+            onlyMyTask() {
+                this.updateTasks();
+            },
+            categoryId() {
+                this.updateTasks();
+            }
         },
         methods: {
-            updateTasks(categoryId) {
-                // ajax
-                if (categoryId === 'all') {
-                    console.log(this.tasks)
+            updateTasks() {
+                const options = {};
+
+                this.categoryId && this.categoryId !== 'all' ? options.categoryId = this.categoryId : '';
+                this.onlyMyTask ? options.authorId = this.user.id : '';
+
+                if (!Object.keys(options).length) {
                     this.getDefaultTasks();
-                    console.log(this.tasks)
-                    console.log(this.$store)
                 } else {
-                    this.$store.getters.tasksList(categoryId);
+                    // this.$store.getters.tasksList(categoryId);
+                    this.$store.dispatch('getTasks', options);
                 }
             },
+            setCategoryId(id) {
+                this.categoryId = id;
+            },
             getDefaultTasks() {
-                this.$store.getters.allTasksList;
+                this.$store.dispatch('getAllTasks');
+            },
+            createTask() {
+                this.$router.push({name: 'TaskPage', params: {action: 'create'}});
             },
         },
     }
 </script>
 <style lang="scss">
+    @import '@front/styles/_variables';
+    @import '@front/styles/mixins/_typography';
 
+    .tasks {
+        &__my-tasks-checkbox {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1rem;
+            @include font-bold(1.6rem, 144%);
+            cursor: pointer;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                width: 1.8rem;
+                height: 1.8rem;
+                background-color: $white;
+                border-width: .1rem;
+                border-color: $grey;
+                border-style: solid;
+                border-radius: 50%;
+                transition: background-color .3s;
+            }
+
+            &._checked {
+                &::before {
+                    background-color: $green;
+                }
+            }
+        }
+    }
+
+    .task-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        &__link-wrapper {
+            margin: 1rem;
+        }
+    }
 </style>

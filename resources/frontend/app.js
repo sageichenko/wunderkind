@@ -1,15 +1,14 @@
 import Vue from 'vue';
-import App from '@front/views/App';
-import store from '@front/store/index.js';
-import router from '@front/router/index.js';
-import axios from 'axios';
+import App from '@front/views/App'; // Корневой компонент
+import store from '@front/store/index.js'; // store нужен для хранения состояния приложения
+import router from '@front/router/index.js'; // конфгурация маршрутизатора
+import axios from 'axios'; // необходимо для использования ajax запросов
 import VueAxios from 'vue-axios';
+import * as filters from '@front/filters';
 
 Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
-
-import * as filters from '@front/filters';
 
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
@@ -17,9 +16,10 @@ Object.keys(filters).forEach(key => {
 
 Vue.prototype.$filters = Vue.options.filters;
 
+// инициализация Vue
 new Vue({
-    el: '#app',
+    el: '#app', // элемент в DOM для инициализации
     router,
     store,
-    render: h => h(App),
+    render: h => h(App), // компонент, используемый в качестве корневого
 });

@@ -57,7 +57,7 @@
             tabs() {
                const tabs = {};
 
-               tabs.all = { text: 'Все', img: '/frontend/assets/images/offices/taganrog/mini.jpg', active: true }
+               tabs.all = { text: 'Все', img: '/frontend/assets/images/tasks/category.png', active: true }
 
                for (const categoryId in this.categories) {
                    if (!this.categories.hasOwnProperty(categoryId)) {
@@ -66,7 +66,7 @@
 
                    tabs[categoryId] = {
                        text: this.categories[categoryId].title,
-                       img: this.categories[categoryId].img,
+                       img: '/frontend/assets/images/tasks/category.png',
                        active: false,
                    }
                }
@@ -116,6 +116,20 @@
     @import '@front/styles/mixins/_typography';
 
     .tasks {
+        &__button {
+            display: inline-block;
+            padding: 2rem;
+            @include font-semibold(2rem);
+            color: $white;
+            border-radius: 3rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        &__new-task-button {
+            background: $green;
+        }
+
         &__my-tasks-checkbox {
             position: relative;
             padding-left: 3rem;
@@ -144,6 +158,12 @@
                     background-color: $green;
                 }
             }
+        }
+
+        &__action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
     }
 

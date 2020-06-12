@@ -27,6 +27,7 @@
         },
         computed: {
             userPage() {
+                console.log(this.action);
                 return this.action === 'edit' || this.action === 'create' ? 'teacher-page' : 'child-page';
             },
             task() {

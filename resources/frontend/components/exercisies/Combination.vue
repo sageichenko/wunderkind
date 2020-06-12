@@ -86,17 +86,6 @@
         flex-direction: column;
         align-content: center;
 
-        /*&__inputs,*/
-        /*&__result {*/
-        /*    display: flex !important;*/
-        /*    flex-wrap: wrap;*/
-        /*    flex-grow: 1;*/
-        /*    padding: 4rem;*/
-        /*    margin-bottom: 2rem;*/
-        /*    border-radius: 4rem;*/
-        /*  box-shadow: inset 0 0 1rem rgba($black, .15);*/
-        /*}*/
-
         &__inputs &__draggable-item {
             border-color: $orange;
         }

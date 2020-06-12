@@ -1,6 +1,7 @@
 <template>
     <div class="header-container">
         <router-link to="/" class="logo">
+            <img src="/frontend/assets/images/logo.png" alt="" class="logo__img">
             <h1 class="logo__site-name">
                 Wunderkind
             </h1>
@@ -39,6 +40,10 @@
         align-items: center;
         height: 100%;
         padding: 0 3rem;
+
+        &__img {
+            max-height: 100%;
+        }
 
         &__site-name {
             @include font-pacifico(5rem);

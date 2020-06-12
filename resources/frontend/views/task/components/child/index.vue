@@ -28,7 +28,7 @@
 <style lang="scss">
     @import '@front/styles/mixins/_typography';
 
-    .teacher-task-page {
+    .child-task-page {
         &__header {
             position: relative;
             text-align: center;

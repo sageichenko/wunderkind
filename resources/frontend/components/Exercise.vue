@@ -70,8 +70,9 @@
         },
         methods: {
             confirmAnswer() {
+                this.$set(this.exercise, 'answer', this.result)
+
                 if (this.checkAnswer()) {
-                    this.$set(this.exercise, 'answer', this.result)
                     this.$emit('right-answer');
                 } else {
                     this.$emit('wrong-answer');

@@ -32,6 +32,8 @@
 
     .task-link {
         display: inline-block;
+        max-width: 18rem;
+        max-height: 21rem;
         padding: 1rem;
         border-radius: 2rem;
         border: .3rem dashed $white;

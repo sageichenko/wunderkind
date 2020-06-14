@@ -63,6 +63,7 @@
         watch: {
             result() {
                 this.$emit('result-update', this.result);
+                //this.$emit('input-update', this.result);
             },
         },
         methods: {
@@ -77,7 +78,7 @@
             },
             createInput() {
                 return {
-                    id: this.inputs.length + 1,
+                    id: this.inputs.length,
                     content: {
                         image: '',
                         text: '',
@@ -85,7 +86,6 @@
                 }
             },
             editInput(index) {
-                console.log('edit', index);
                 this.currentEditableInputIndex = index;
                 this.openEdit();
             },
@@ -93,6 +93,7 @@
                 this.isEditOpen = true;
             },
             closeEdit() {
+                this.$emit('input-update', this.result);
                 this.isEditOpen = false;
             },
         },

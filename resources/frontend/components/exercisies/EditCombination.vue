@@ -87,13 +87,13 @@
                 isEditOpen: false,
             };
         },
-        created() {
-            //this.inputs = [...this.exercise.inputs];
-        },
         watch: {
             result() {
                 this.$emit('result-update', this.result);
             },
+            inputs() {
+                this.$emit('input-update', this.inputs);
+            }
         },
         methods: {
             getChildPayload (containerId, itemIndex) {
@@ -107,7 +107,7 @@
             },
             createInput() {
                 return {
-                    id: this.inputs.length + 1,
+                    id: this.inputs.length,
                     content: {
                         image: '',
                         text: '',
@@ -122,6 +122,7 @@
                 this.isEditOpen = true;
             },
             closeEdit() {
+                this.$emit('input-update', this.inputs);
                 this.isEditOpen = false;
             },
         },

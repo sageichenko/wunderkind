@@ -15,6 +15,7 @@
             :inputs="exercise.inputs"
             :result="currentResult"
             @result-update="updateResult"
+            @input-update="updateInputs"
         />
         <div class="edit-exercise__actions">
             <div
@@ -25,7 +26,7 @@
             </div>
         </div>
         <div
-            v-if="results.length"
+            v-if="exercise.results.length"
             class="edit-exercise__comment subtitle-lvl-3"
             :class="`${isResultsOpen ? '_open' : ''}`"
             @click="toggleResults"
@@ -34,7 +35,7 @@
         </div>
         <div class="edit-exercise__results" :class="`${isResultsOpen ? '_open' : ''}`">
             <div
-                v-for="(result, index) in results"
+                v-for="(result, index) in exercise.results"
                 :key="(result, index)"
                 class="edit-exercise__result-wrapper">
                 <container
@@ -51,7 +52,7 @@
                         class="edit-exercise__draggable-item drag-item"
                     >
                         <div class="edit-exercise__item-content">
-                            {{ item.content.text || '...' }}
+                            {{ exercise.inputs[item].content.text || '...' }}
                         </div>
                     </draggable>
                 </container>
@@ -88,8 +89,8 @@
         },
         data() {
             return {
-                results: [],
                 currentResult: [],
+                relevantResult: [],
                 resultsQty: 0,
                 isResultsOpen: true,
             };
@@ -105,29 +106,35 @@
         },
         methods: {
             addResult() {
-                console.log('Add result');
-                this.results.push(this.currentResult);
+                this.exercise.results.push(this.relevantResult);
                 this.resultsQty++;
                 this.currentResult = [];
+                this.relevantResult = [];
             },
             removeResult(index) {
-                this.results.splice(index, 1);
+                this.exercise.results.splice(index, 1);
             },
             updateResult(result) {
-                console.log('Update result');
-                console.log(result);
                 this.currentResult = result;
+                this.relevantResult = [];
+                this.currentResult.forEach((item) => {
+                    this.relevantResult.push(item.id)
+                });
+            },
+            updateInputs(inputs) {
+                this.exercise.inputs = inputs;
             },
             toggleResults() {
                 this.isResultsOpen = !this.isResultsOpen;
             },
             getChildPayload (containerId, itemIndex) {
-                console.log('getChildPayload', containerId, itemIndex);
-                return this.results[containerId][itemIndex]
+                return this.exercise.results[containerId][itemIndex]
             },
             onDrop(containerId, dropResult) {
-                console.log('onDrop', containerId, typeof containerId, dropResult);
-                this.$set(this.results, containerId, applyDrag(this.results[containerId], dropResult));
+                this.$set(this.exercise.results, containerId, applyDrag(this.exercise.results[containerId], dropResult));
+            },
+            getExercise() {
+                return this.exercise;
             },
         }
     }

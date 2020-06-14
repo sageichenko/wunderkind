@@ -27,11 +27,10 @@
         },
         computed: {
             userPage() {
-                console.log(this.action);
                 return this.action === 'edit' || this.action === 'create' ? 'teacher-page' : 'child-page';
             },
             task() {
-                if (this.id) {
+                if (this.action !== 'create') {
                     return this.$store.getters.task;
                 } else {
                     this.$set(this.newTaskTemplate, 'authorId', this.user.id)
@@ -43,7 +42,7 @@
             }
         },
         created() {
-            if (this.id) {
+            if (this.action !== 'create') {
                 this.getTask();
             }
         },

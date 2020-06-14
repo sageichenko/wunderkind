@@ -2,7 +2,7 @@ const state = {
     tasksList: [],
     task: {},
     currentUser: {
-        id: '0',
+        id: 0,
         access: 'teacher',
 
     },

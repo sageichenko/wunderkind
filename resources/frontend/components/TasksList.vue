@@ -108,6 +108,15 @@
             createTask() {
                 this.$router.push({name: 'TaskPage', params: {action: 'create'}});
             },
+            getTasks() {
+                this.axios.get('/get-tasks')
+                    .then(function (response) {
+                        console.log('response', response.data);
+                    })
+                    .catch(function (error) {
+                        console.log('error', error);
+                    });
+            }
         },
     }
 </script>

@@ -4,7 +4,7 @@ const allTasksList = [
         title: 'Task 1',
         categoryId: 'logic',
         categoryImg: '/frontend/assets/images/tasks/1.jpg',
-        authorId: '0',
+        authorId: 0,
         exercises: [
             {
                 type: 'combination',
@@ -125,9 +125,41 @@ const allTasksList = [
         categoryImg: '/frontend/assets/images/tasks/1.jpg', },
 ];
 
+import Vue from 'vue';
+
+function saveImg(image, id) {
+    const data = new FormData();
+
+    data.set('id', id);
+    data.set('image', image);
+
+    Vue.axios.post(`/save-img`,
+        data,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+
+    )
+        .then(function (response) {
+            console.log('response save img', response.data);
+        })
+        .catch(function (error) {
+            console.log('error save img', error);
+        });
+}
+
 const actions = {
     getAllTasks: ( { commit } ) => {
-        commit('setTasks', allTasksList);
+        Vue.axios.get('/get-tasks')
+            .then(function (response) {
+                commit('setTasks', response.data);
+                console.log('response', response.data);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+            });
     },
     getTasks: ({ commit }, options) => {
         commit(
@@ -154,18 +186,47 @@ const actions = {
         );
     },
     getTask: ({ commit }, id) => {
-        commit(
-            'setTask',
-            allTasksList.reduce(
-                (acc, task) => {
-                    if (task.id === id) {
-                        acc = task;
-                    }
-
-                    return acc;
-                }, {}
-            )
-        );
+        Vue.axios.get(`/get-task`, {
+            params: {
+                id: id
+            }
+        })
+            .then(function (response) {
+                commit('setTask', response.data);
+                console.log('response', response.data);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+            });
+    },
+    saveTask: ({ commit }, props) => {
+        Vue.axios.post(`/save-task`, {
+            params: {
+                task: JSON.stringify(props.task)
+            }
+        })
+            .then(function (response) {
+                if (props.image && response.data.id) {
+                    saveImg(props.image, response.data.id);
+                }
+                console.log('response save task', response.data);
+            }.bind(this))
+            .catch(function (error) {
+                console.log('error save task', error);
+            });
+    },
+    deleteTask: ({ commit }, id) => {
+        Vue.axios.get(`/delete-task`, {
+            params: {
+                id: id
+            }
+        })
+            .then(function (response) {
+                console.log('response delete task', response.data);
+            })
+            .catch(function (error) {
+                console.log('error delete task', error);
+            });
     },
 };
 export default actions;

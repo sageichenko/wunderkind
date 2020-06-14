@@ -9,6 +9,7 @@
             class="edit-task__exercise-wrapper"
         >
             <edit-exercise
+                :ref="index"
                 :exercise="exercise"
                 :num="index"
             />
@@ -47,7 +48,6 @@
         },
         methods: {
             addExercise() {
-                console.log('add exercise', this);
                 this.$set(this.exercises, this.exercises.length, this.createExercise())
             },
             updateNewExerciseType(newType) {
@@ -61,6 +61,20 @@
                     inputs: [],
                 }
             },
+            getExercises() {
+                const exercises = [];
+
+                for (const index in this.$refs) {
+                    if (!this.$refs.hasOwnProperty(index)) {
+                        return;
+                    }
+
+                    exercises[index] = this.$refs[index][0].getExercise();
+                }
+
+                return exercises;
+                //this.$store.dispatch('saveTask', )
+            }
         },
     }
 </script>

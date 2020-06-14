@@ -10,6 +10,9 @@
         name: 'TasksPage',
         components: {
             TasksList,
+        },
+        mounted() {
+            this.$store.dispatch('setUser');
         }
     }
 </script>

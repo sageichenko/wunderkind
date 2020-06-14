@@ -120,5 +120,18 @@ const actions = {
                 console.log('error delete task', error);
             });
     },
+    setUser: ({ commit }) => {
+        axios.get('/api/profile', {
+                headers: { Authorization: `Bearer ${localStorage.usertoken}` }
+            }
+        ).then(response => {
+             console.log('/api/profile', response.data)
+            //return res.data
+            commit('setUser', response.data.user);
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 };
 export default actions;

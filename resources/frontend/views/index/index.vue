@@ -1,7 +1,11 @@
 <template>
     <div class="index-page">
-        <router-link :to="{name: 'TasksPage'}" >
-            здесь должна быть логинка, но пока просто посмотрите задания
+        <router-link :to="{name: 'Login'}" >
+            Войти
+        </router-link>
+
+        <router-link :to="{name: 'Register'}" >
+            Зарегистироваться
         </router-link>
     </div>
 </template>

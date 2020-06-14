@@ -10,6 +10,7 @@ class User implements AuthenticatableContract
     private $conn;
 
     private $username;
+    private $email;
     private $password;
     protected $rememberTokenName = 'remember_token';
 
@@ -26,10 +27,11 @@ class User implements AuthenticatableContract
      */
     public function fetchUserByCredentials(Array $credentials)
     {
-        $arr_user = $this->conn->find('users', ['username' => $credentials['username']]);
+        $arr_user = $this->conn->find('users', ['name' => $credentials['name']]);
 
         if (! is_null($arr_user)) {
-            $this->username = $arr_user['username'];
+            $this->username = $arr_user['name'];
+            $this->email = $arr_user['email'];
             $this->password = $arr_user['password'];
         }
 
@@ -97,7 +99,8 @@ class User implements AuthenticatableContract
 
     public function create(array $data)
     {
-        $this->username = $data['name'];
+        $this->username = $data['username'];
+        $this->email = $data['email'];
         $this->password = $data['password'];
         var_dump('CREATE', $data);
 

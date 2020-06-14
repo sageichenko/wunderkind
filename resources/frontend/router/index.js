@@ -20,6 +20,30 @@ export const constantRoutes = [
         ],
     },
     {
+        path: '/login',
+        component: Layout,
+        redirect: '/login',
+        children: [
+            {
+                path: 'login',
+                component: () => import('@front/views/login/index'),
+                name: 'Login',
+            },
+        ],
+    },
+    {
+        path: '/register',
+        component: Layout,
+        redirect: '/register',
+        children: [
+            {
+                path: 'register',
+                component: () => import('@front/views/register/index'),
+                name: 'Register',
+            },
+        ],
+    },
+    {
         path: '/tasks',
         component: Layout,
         redirect: '/tasks',

@@ -8,5 +8,8 @@ const actions = {
     setTask: ( state, task ) => {
         state.task = task;
     },
+    setUser: ( state, user ) => {
+        state.user = user;
+    },
 };
 export default actions;

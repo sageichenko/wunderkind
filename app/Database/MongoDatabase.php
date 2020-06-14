@@ -23,7 +23,10 @@ class MongoDatabase implements NosqlServiceInterface
         return $this->database->{$collection}->findOne($criteria);
     }
 
-    public function create($collection, Array $document) {}
+    public function create($collection, Array $document) {
+        var_dump('mongo create', $collection, $document);die;
+
+    }
     public function update($collection, $id, Array $document) {}
     public function delete($collection, $id) {}
 }

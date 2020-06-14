@@ -18,8 +18,4 @@ class MongoController extends Controller
             return 'Not authorized to access this page!';
         }
     }
-
-    public function registrate() {
-
-    }
 }

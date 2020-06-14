@@ -55,8 +55,12 @@ class Task extends Model
                 'title' => $task->title,
                 'exercises' => $task->exercises,
                 'categoryImg' => $task->categoryImg,
-                'authorId' => 0,
             ]);
+
+            $category = Category::find($task->categoryId);
+
+            $newTask->category()->associate($category);
+            $newTask->save();
 
             $taskId = $newTask->id;
         }

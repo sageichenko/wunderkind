@@ -19,7 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/get-tasks','TaskController@all');
+Route::get('/get-tasks','TaskController@taskList');
+Route::get('/get-filter-tasks','TaskController@filterTaskList');
+Route::get('/get-categories','CategoryController@all');
 Route::get('/get-task','TaskController@task');
 Route::post('/save-task','TaskController@save');
 Route::post('/save-img','TaskController@saveImg');

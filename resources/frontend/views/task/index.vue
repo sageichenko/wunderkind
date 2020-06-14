@@ -18,9 +18,9 @@
             return {
                 newTaskTemplate: {
                     title: '',
-                    categoryId: '',
+                    categoryId: '5ee60dbc7221000058002598',
                     categoryImg: '',
-                    authorId: '',
+                    authorId: '5ee37858eb0b00000b0008cb',
                     exercises: [],
                 }
             };

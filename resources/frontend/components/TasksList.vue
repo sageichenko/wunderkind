@@ -55,26 +55,22 @@
                 return this.$store.getters.categories;
             },
             tabs() {
-               const tabs = {};
+                const tabs = {};
 
-               tabs.all = { text: 'Все', img: '/frontend/assets/images/tasks/category.png', active: true }
+                tabs.all = { text: 'Все', img: '/frontend/assets/images/tasks/category.png', active: !this.categoryId || this.categoryId === 'all' }
+                this.categories.forEach((category) => {
+                    tabs[category.id] = {
+                        text: category.title,
+                        img: category.image,
+                        active: this.categoryId && this.categoryId === category.id,
+                    }
+                });
 
-               for (const categoryId in this.categories) {
-                   if (!this.categories.hasOwnProperty(categoryId)) {
-                       return;
-                   }
-
-                   tabs[categoryId] = {
-                       text: this.categories[categoryId].title,
-                       img: '/frontend/assets/images/tasks/category.png',
-                       active: false,
-                   }
-               }
-
-               return tabs;
+                return tabs;
             },
         },
         created() {
+            this.getCategories();
             this.getDefaultTasks();
         },
         watch: {
@@ -104,6 +100,9 @@
             },
             getDefaultTasks() {
                 this.$store.dispatch('getAllTasks');
+            },
+            getCategories() {
+                this.$store.dispatch('setCategories');
             },
             createTask() {
                 this.$router.push({name: 'TaskPage', params: {action: 'create'}});

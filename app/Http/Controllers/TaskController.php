@@ -4,26 +4,36 @@ use Illuminate\Http\Request;
 //use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Task\Task;
+use App\Models\Task\Category;
 use Image;
 
 class TaskController extends Controller {
-    public function all(){
+    public function taskList(){
         $tasks = new Task();
 
         $items = $tasks->getAll();
 
         return response()->json($items, 200);
+    }
 
-//        if(!isNull($items)) {
-//            return response()->json($items, 200);
-//        } else {
-//            $msg = [
-//                'error' => true,
-//                'message' => 'Заданий не найденно'
-//            ];
-//
-//            return response()->json(array($msg), 404);
-//        }
+    public function filterTaskList(Request $request){
+        $category = Category::find($request->all()['categoryId']);
+
+        $tasks = $category->tasks()->get();
+        $items = [];
+
+        foreach ($tasks as $key => $value) {
+            if ($value['title'] && $value['exercises']) {
+                array_push($items, [
+                    'id' => $value['id'],
+                    'title' => $value['title'],
+                    'categoryImg' => $value['categoryImg'],
+                    'authorId' => 0,
+                ]);
+            }
+        }
+
+        return response()->json($items, 200);
     }
 
     public function task(Request $request){
@@ -37,9 +47,24 @@ class TaskController extends Controller {
     public function save(Request $request){
         $task = new Task();
 
-        $isOk = $task->saveTask(json_decode($request->all()['params']['task']));
+        $taskParams = json_decode($request->all()['params']['task']);
 
-        return response()->json(['id' => $isOk], 200);
+        $id = $task->saveTask($taskParams);
+
+
+        //$category = Category::find($taskParams->categoryId);
+
+//        $category->tasks()->associate(Task::find($id));
+//
+//        $category->save();
+
+//        $user = Category::find($taskParams['authorId']);
+//
+//        $user->associate(Task::find($id));
+//
+//        $user->save();
+
+        return response()->json(['id' => $id], 200);
     }
 
     public function saveImg(Request $request){

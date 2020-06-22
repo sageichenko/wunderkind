@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 //use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Task\Task;
+use App\User;
 use App\Models\Task\Category;
 use Image;
 
@@ -28,7 +29,7 @@ class TaskController extends Controller {
                     'id' => $value['id'],
                     'title' => $value['title'],
                     'categoryImg' => $value['categoryImg'],
-                    'authorId' => 0,
+                    'authorId' => $value['authorId'],
                 ]);
             }
         }
@@ -50,19 +51,6 @@ class TaskController extends Controller {
         $taskParams = json_decode($request->all()['params']['task']);
 
         $id = $task->saveTask($taskParams);
-
-
-        //$category = Category::find($taskParams->categoryId);
-
-//        $category->tasks()->associate(Task::find($id));
-//
-//        $category->save();
-
-//        $user = Category::find($taskParams['authorId']);
-//
-//        $user->associate(Task::find($id));
-//
-//        $user->save();
 
         return response()->json(['id' => $id], 200);
     }

@@ -1,15 +1,15 @@
 <template>
     <div class="tasks">
         <div
-            v-if="user.access === 'teacher'"
+            v-if="user.teacher"
             class="tasks__actions">
-            <div
-                class="tasks__my-tasks-checkbox"
-                :class="`${onlyMyTask ? '_checked' : ''}`"
-                @click="onlyMyTask = !onlyMyTask"
-            >
-                Показывать только мои задания
-            </div>
+<!--            <div-->
+<!--                class="tasks__my-tasks-checkbox"-->
+<!--                :class="`${onlyMyTask ? '_checked' : ''}`"-->
+<!--                @click="onlyMyTask = !onlyMyTask"-->
+<!--            >-->
+<!--                Показывать только мои задания-->
+<!--            </div>-->
             <div
                 class="tasks__button tasks__new-task-button"
                 @click="createTask"
@@ -24,6 +24,9 @@
                 :key="task"
                 class="task-list__link-wrapper">
                 <task-link :task="task" />
+            </div>
+            <div v-if="!tasks.length">
+                Таких заданий нет
             </div>
         </div>
     </div>
@@ -86,7 +89,7 @@
                 const options = {};
 
                 this.categoryId && this.categoryId !== 'all' ? options.categoryId = this.categoryId : '';
-                this.onlyMyTask ? options.authorId = this.user.id : '';
+                this.onlyMyTask ? options.authorId = this.user._id : '';
 
                 if (!Object.keys(options).length) {
                     this.getDefaultTasks();

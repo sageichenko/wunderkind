@@ -1,5 +1,8 @@
 <template>
     <div class="task">
+        <div v-if="currentExerciseIndex === exercises.length - 1" class="task__notice subtitle-lvl-3">
+            Это последнее задание, не забудь вернуться и прорешать пропущенные!
+        </div>
         <exercise
             v-if="exercises[currentExerciseIndex]"
             :exercise="exercises[currentExerciseIndex]"
@@ -13,7 +16,7 @@
             v-else
             class="task__finish"
         >
-            Your result is {{ rightExerciseQty }}
+            <p class="task__finish-text subtitle-lvl-3">Правильных ответов {{ rightExerciseQty }} из {{ exercises.length }}</p>
         </div>
     </div>
 </template>

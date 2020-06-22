@@ -121,11 +121,11 @@ const actions = {
             });
     },
     setUser: ({ commit }) => {
-        axios.get('/api/profile', {
+        Vue.axios.get('/api/profile', {
                 headers: { Authorization: `Bearer ${localStorage.usertoken}` }
             }
         ).then(response => {
-             console.log('/api/profile', response.data)
+             console.log('/api/profile', response.data.user)
             //return res.data
             commit('setUser', response.data.user);
         })

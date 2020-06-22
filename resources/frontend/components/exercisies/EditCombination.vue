@@ -17,6 +17,16 @@
                 <div class="edit-combination__item-content" @dblclick="editInput(index, $event)">
                     {{ input.content.text || '...' }}
                 </div>
+                <div class="edit-combination__result-actions">
+                    <div
+                        class="edit-combination__button edit-combination__remove-button"
+                        @click="removeInput(index, $event)"
+                    >
+                        <img src="/frontend/assets/images/icons/delete.png"
+                             alt="delete"
+                             class="edit-combination__img-button">
+                    </div>
+                </div>
             </draggable>
             <div
                 class="edit-combination__add-input-button drag-item"
@@ -125,6 +135,9 @@
                 this.$emit('input-update', this.inputs);
                 this.isEditOpen = false;
             },
+            removeInput(index) {
+                this.inputs.splice(index, 1);
+            }
         },
     }
 </script>
@@ -160,6 +173,22 @@
 
         &__add-input-button {
             cursor: copy;
+        }
+
+        &__remove-button {
+            position: absolute;
+            top: -1.5rem;
+            left: 4.5rem;
+            padding: 0;
+            width: 3rem;
+        }
+
+        &__img-button {
+            max-width: 100%;
+        }
+
+        &__draggable-item {
+            position: relative;
         }
     }
 

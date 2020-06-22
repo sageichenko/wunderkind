@@ -21,6 +21,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->json()->all() , [
             'name' => 'required|string|max:255',
+            'teacher' => 'required|boolean',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
@@ -32,6 +33,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->json()->get('name'),
             'email' => $request->json()->get('email'),
+            'teacher' => $request->json()->get('teacher'),
             'password' => Hash::make($request->json()->get('password')),
         ]);
 
@@ -70,6 +72,7 @@ class UserController extends Controller
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
+
         return response()->json(compact('user'));
     }
 

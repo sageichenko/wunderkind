@@ -6,7 +6,7 @@ class Task extends Model
 {
     //
     protected $collection = 'task';
-    protected $fillable = ['title','author', 'exercises', 'categoryImg'];
+    protected $fillable = ['title','authorId', 'exercises', 'categoryImg'];
 
     public function getAll() {
         $all = $this::all();
@@ -19,7 +19,7 @@ class Task extends Model
                     'id' => $value['id'],
                     'title' => $value['title'],
                     'categoryImg' => $value['categoryImg'],
-                    'authorId' => 0,
+                    'authorId' => $value['authorId'],
                 ]);
             }
         }
@@ -35,7 +35,8 @@ class Task extends Model
             'title' => $task['title'],
             'exercises' => $task['exercises'],
             'categoryImg' => $task['categoryImg'],
-            'authorId' => 0,
+            'authorId' => $task['authorId'],
+            'categoryId' => $task['category_id'],
         ];
     }
 
@@ -43,11 +44,15 @@ class Task extends Model
         $taskId = null;
 
         if (property_exists($task,'id')) {
+            $category = Category::find($task->categoryId);
+
             $this::find($task->id)->update([
                 'title' => $task->title,
                 'exercises' => $task->exercises,
                 'categoryImg' => $task->categoryImg,
-            ]);
+            ]);;
+
+            $this::find($task->id)->category()->associate($category);
 
             $taskId = $task->id;
         } else {
@@ -55,6 +60,7 @@ class Task extends Model
                 'title' => $task->title,
                 'exercises' => $task->exercises,
                 'categoryImg' => $task->categoryImg,
+                'authorId' => $task->authorId
             ]);
 
             $category = Category::find($task->categoryId);
@@ -94,10 +100,4 @@ class Task extends Model
     {
         return $this->belongsTo('App\Models\Task\Category');
     }
-
-    public function author()
-    {
-        return $this->belongsTo('App\Models\Auth\User');
-    }
-
 }

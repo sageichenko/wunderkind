@@ -1,6 +1,9 @@
 <template>
     <div class="login-page">
         <form ref="commonForm" class="form">
+            <div v-if="showNotice">
+                Похоже, вы не правильно ввели данные, попробуйте еще раз
+            </div>
             <div class="form__row">
                 <div class="text-input">
                     <input
@@ -42,13 +45,14 @@
             return {
                 email: '',
                 password: '',
+                showNotice: false,
             };
         },
 
         methods: {
             sendForm() {
                 //const data = new FormData(this.$refs.commonForm);
-
+                this.showNotice = false;
                 this.axios.post(
                     '/api/login',
                     {
@@ -57,10 +61,14 @@
                     },
                 ).then((response) => {
                     localStorage.setItem('usertoken', response.data.token)
+                    this.$store.dispatch('setUser');
                     this.email = ''
                     this.password = ''
                     this.$router.push({ name: 'TasksPage' })
                 }).catch((err) => {
+                    this.showNotice = true;
+                    this.email = ''
+                    this.password = ''
                     console.log(err)
                 });
             },
@@ -82,13 +90,37 @@
             padding: 2rem;
             @include font-semibold(2rem);
             color: $white;
-            border-radius: 3rem;
+            border-radius: 2rem;
             cursor: pointer;
             user-select: none;
         }
 
-        &__new-task-button {
+        &__submit {
             background: $green;
+        }
+    }
+
+    .text-input {
+        position: relative;
+        min-width: 100%;
+        min-height: 6rem;
+
+        &__field {
+            min-width: 100%;
+            min-height: 100%;
+            max-width: 100%;
+            max-height: 11rem;
+            padding: 3rem 2rem 1rem;
+            @include font-regular();
+            color: $black;
+            border: .1rem solid $grey;
+            border-radius: 2rem;
+            transition: .3s ease border-color;
+
+            &:focus {
+                outline: none;
+                border-color: $black;
+            }
         }
     }
 

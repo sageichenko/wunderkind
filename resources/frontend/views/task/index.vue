@@ -1,26 +1,29 @@
 <template>
     <div class="task-page">
-        <component :task="task" :is="userPage" />
+        <component v-if="user._id" :task="task" :is="userPage" />
+        <index v-else />
     </div>
 </template>
 <script>
     import ChildPage from './components/child/index';
     import TeacherPage from './components/teacher/index';
+    import Index from "@front/views/index/index";
 
     export default {
         name: 'TasksPage',
         props: ['id', 'action'],
         components: {
             ChildPage,
-            TeacherPage
+            TeacherPage,
+            Index
         },
         data() {
             return {
                 newTaskTemplate: {
                     title: '',
-                    categoryId: '5ee60dbc7221000058002598',
+                    categoryId: '',
                     categoryImg: '',
-                    authorId: '5ee37858eb0b00000b0008cb',
+                    authorId: '',
                     exercises: [],
                 }
             };
@@ -33,7 +36,7 @@
                 if (this.action !== 'create') {
                     return this.$store.getters.task;
                 } else {
-                    this.$set(this.newTaskTemplate, 'authorId', this.user.id)
+                    this.$set(this.newTaskTemplate, 'authorId', this.user._id)
                     return this.newTaskTemplate;
                 }
             },

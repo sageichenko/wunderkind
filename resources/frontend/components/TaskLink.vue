@@ -1,10 +1,10 @@
 <template>
     <router-link
-        :to="{name: 'TaskPage', params: {id: task.id, action: this.user.id === task.authorId ? 'edit' : 'solve'}}"
+        :to="{name: 'TaskPage', params: {id: task.id, action: this.user._id === task.authorId ? 'edit' : 'solve'}}"
         class="task-link"
-        :class="`${this.user.id === task.authorId ? '_my-task' : ''}`"
+        :class="`${this.user._id === task.authorId ? '_my-task' : ''}`"
     >
-        <div class="task-link__img-wrapper" :style="`background-image: url(${task.categoryImg})`" />
+        <div class="task-link__img-wrapper" :style="`background-image: url(${task.categoryImg || '/frontend/assets/images/tasks/1.jpg'})`" />
         <div class="task-link__title">
             {{ task.title }}
         </div>

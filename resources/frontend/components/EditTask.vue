@@ -94,6 +94,7 @@
         }
 
         &__add-button {
+            margin-bottom: 2rem;
             background: $green;
         }
 

@@ -9,7 +9,7 @@ const actions = {
         state.task = task;
     },
     setUser: ( state, user ) => {
-        state.user = user;
+        state.currentUser = user;
     },
 };
 export default actions;

@@ -34,6 +34,11 @@
                     >
                 </div>
             </div>
+            <common-select
+                :options="{selectOptions: {teacher: 'Преподаватель', child: 'Ученик'}}"
+                class="edit-task__select"
+                @change="updateAccess"
+            />
             <div class="form__row">
                 <div
                     class="form__button form__submit"
@@ -47,14 +52,19 @@
     </div>
 </template>
 <script>
+    import CommonSelect from '@front/components/Select';
+
     export default {
         name: 'RegisterPage',
+        components: {
+            CommonSelect,
+        },
         data() {
             return {
                 name: '',
                 email: '',
                 password: '',
-                access: 'child',
+                teacher: true,
                 selectOptions: {
                     teacher: 'Преподаватель',
                     child: 'Ученик',
@@ -72,7 +82,7 @@
                         name: this.name,
                         email: this.email,
                         password: this.password,
-                        // access: this.access,
+                        teacher: this.teacher,
                     },
                 ).then((response) => {
                     console.log(response)
@@ -81,6 +91,10 @@
                     console.log(err)
                 });
             },
+            updateAccess(newValue) {
+                this.teacher = newValue === 'teacher';
+                console.log(this.teacher);
+            }
         },
     }
 </script>
@@ -99,13 +113,37 @@
             padding: 2rem;
             @include font-semibold(2rem);
             color: $white;
-            border-radius: 3rem;
+            border-radius: 2rem;
             cursor: pointer;
             user-select: none;
         }
 
-        &__new-task-button {
+        &__submit {
             background: $green;
+        }
+    }
+
+    .text-input {
+        position: relative;
+        min-width: 100%;
+        min-height: 6rem;
+
+        &__field {
+            min-width: 100%;
+            min-height: 100%;
+            max-width: 100%;
+            max-height: 11rem;
+            padding: 3rem 2rem 1rem;
+            @include font-regular();
+            color: $black;
+            border: .1rem solid $grey;
+            border-radius: 2rem;
+            transition: .3s ease border-color;
+
+            &:focus {
+                outline: none;
+                border-color: $black;
+            }
         }
     }
 

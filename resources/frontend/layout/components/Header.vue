@@ -1,11 +1,11 @@
 <template>
     <div class="header-container">
-        <router-link to="/" class="logo">
+        <div class="logo">
             <img src="/frontend/assets/images/logo.png" alt="" class="logo__img">
             <h1 class="logo__site-name">
                 Wunderkind
             </h1>
-        </router-link>
+        </div>
     </div>
 </template>
 

@@ -9,7 +9,7 @@
             :inputs="exercise.inputs"
             @result-update="updateResult"
         />
-        <div
+        <div class="subtitle"
             v-else
         >
             Ты уже решил эту задачу!
@@ -20,6 +20,14 @@
                 @click="returnBack"
             >
                 Вернуться
+            </div>
+
+            <div
+                v-if="!exercise.done"
+                class="exercise__button exercise__next-button"
+                @click="next"
+            >
+                Дальше
             </div>
             <div
                 v-if="!exercise.done"

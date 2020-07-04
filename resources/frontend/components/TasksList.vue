@@ -25,7 +25,7 @@
                 class="task-list__link-wrapper">
                 <task-link :task="task" />
             </div>
-            <div v-if="!tasks.length">
+            <div class="task-list__error" v-if="!tasks.length">
                 Таких заданий нет
             </div>
         </div>
@@ -139,6 +139,10 @@
 
         &__new-task-button {
             background: $green;
+        }
+
+        &__error {
+            @include font-regular(2rem, 144%);
         }
 
         &__my-tasks-checkbox {

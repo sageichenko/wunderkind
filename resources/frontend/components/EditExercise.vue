@@ -52,7 +52,7 @@
                         class="edit-exercise__draggable-item drag-item"
                     >
                         <div class="edit-exercise__item-content">
-                            {{ exercise.inputs[item].content.text || '...' }}
+                            {{ getInput(item) && getInput(item).content.text || '...' }}
                         </div>
                     </draggable>
                 </container>
@@ -108,7 +108,9 @@
             addResult() {
                 this.exercise.results.push(this.relevantResult);
                 this.resultsQty++;
-                this.currentResult = [];
+                if (this.exercise.type !== 'order') {
+                    this.currentResult = [];
+                }
                 this.relevantResult = [];
             },
             removeResult(index) {
@@ -136,6 +138,11 @@
             getExercise() {
                 return this.exercise;
             },
+            getInput(index){
+                return this.exercise.inputs.find(function(input) {
+                    return input.id === index;
+                })
+            }
         }
     }
 </script>

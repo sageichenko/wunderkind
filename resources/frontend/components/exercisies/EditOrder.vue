@@ -14,6 +14,16 @@
             <div class="edit-order__item-content" @dblclick="editInput(index, $event)">
                 {{ input.content.text || '...' }}
             </div>
+            <div class="edit-order__result-actions">
+                <div
+                    class="edit-order__button edit-order__remove-button"
+                    @click="removeInput(index, $event)"
+                >
+                    <img src="/frontend/assets/images/icons/delete.png"
+                         alt="delete"
+                         class="edit-order__img-button">
+                </div>
+            </div>
         </draggable>
         <div
             class="edit-order__add-input-button drag-item"
@@ -63,8 +73,11 @@
         watch: {
             result() {
                 this.$emit('result-update', this.result);
-                //this.$emit('input-update', this.result);
+                this.$emit('input-update', this.result);
             },
+            // inputs() {
+            //     this.result = [...this.inputs];
+            // }
         },
         methods: {
             getChildPayload (containerId, itemIndex) {
@@ -78,7 +91,7 @@
             },
             createInput() {
                 return {
-                    id: this.inputs.length,
+                    id: this.result.length,
                     content: {
                         image: '',
                         text: '',
@@ -96,6 +109,9 @@
                 this.$emit('input-update', this.result);
                 this.isEditOpen = false;
             },
+            removeInput(index) {
+                this.result.splice(index, 1);
+            }
         },
     }
 </script>
@@ -127,6 +143,22 @@
 
         &__add-input-button {
             cursor: copy;
+        }
+
+        &__draggable-item {
+            position: relative;
+        }
+
+        &__remove-button {
+            position: absolute;
+            top: -1.5rem;
+            left: 4.5rem;
+            padding: 0;
+            width: 3rem;
+        }
+
+        &__img-button {
+            max-width: 100%;
         }
     }
 

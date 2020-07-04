@@ -19,42 +19,44 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
+        // валидация полей
         $validator = Validator::make($request->json()->all() , [
             'name' => 'required|string|max:255',
-            'teacher' => 'required|boolean',
             'email' => 'required|string|email|max:255|unique:users',
+            'teacher' =>'required|boolean',
             'password' => 'required|string|min:6',
         ]);
-
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-
+        // если поля валидны, то создается новый пользователь
         $user = User::create([
             'name' => $request->json()->get('name'),
             'email' => $request->json()->get('email'),
             'teacher' => $request->json()->get('teacher'),
             'password' => Hash::make($request->json()->get('password')),
         ]);
-
         $token = JWTAuth::fromUser($user);
-
         return response()->json(compact('user','token'),201);
     }
 
+
     public function login(Request $request)
+
     {
+        // получение данных из запроса
         $credentials = $request->json()->all();
 
+        // проверка наличия пользователя с заданными данными
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        return response()->json( compact('token') );
+        return response()->json(compact('token'));
     }
 
 

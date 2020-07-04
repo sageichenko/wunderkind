@@ -3,5 +3,6 @@ const getters = {
     task: state => state.task,
     categories: state => state.categories,
     currentUser: state => state.currentUser,
+    serverResponse: state => state.serverResponse,
 };
 export default getters;

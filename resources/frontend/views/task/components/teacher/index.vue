@@ -33,12 +33,14 @@
                 Сохранить задание
             </div>
         </div>
+        <message :message-text="messageText" @clear="messageText=''" />
     </div>
 </template>
 <script>
     import EditTask from '@front/components/EditTask';
     import FileInput from '@front/components/FileInput';
     import CommonSelect from '@front/components/Select';
+    import Message from '@front/components/Message';
 
     export default {
         name: 'TeacherTaskPage',
@@ -47,19 +49,20 @@
             EditTask,
             FileInput,
             CommonSelect,
+            Message,
         },
         data() {
             return {
                 image: null,
                 imageSrc: '',
+                messageText: ''
             };
         },
-        // watch: {
-        //     task(newValue, oldValue) {
-        //         console.log('watch', oldValue, newValue);
-        //         this.$set(this.task, 'exercises', newValue.exercises);
-        //     }
-        // },
+        watch: {
+            serverResponse(newValue) {
+                this.messageText = newValue;
+            }
+        },
         computed: {
             categoryName() {
                 let category = '';
@@ -76,18 +79,33 @@
 
                 return category;
             },
+
             categories() {
                 return this.$store.getters.categories;
             },
 
-            categoryOptions() {
-                console.log('this.categories', this.categories);
+            serverResponse() {
+                return this.$store.getters.serverResponse;
+            },
 
+            categoryOptions() {
                 return this.categories.reduce((options, item) => {
                     options[item.id] = item.title;
 
                     return options;
-                }, {})
+                }, {
+                    default: 'Выберите категорию'
+                })
+            },
+
+            isTasksFilled() {
+                return this.task.exercises.every(function(exercise) {
+                    return exercise.condition
+                        && exercise.inputs
+                        && exercise.results
+                        && exercise.inputs.length
+                        && exercise.results.length;
+                });
             }
         },
         methods: {
@@ -98,8 +116,15 @@
                 return this.$refs.edit.getExercises();
             },
             saveTask() {
+                if(!this.task.title) {
+                    this.messageText = 'Введите название задания!';
+                    return;
+                }
                 this.$set(this.task, 'exercises', this.getExercises());
-                console.log('saveTask', this.task)
+                if(!this.task.exercises.length || !this.isTasksFilled) {
+                    this.messageText = 'Настройте упражнения!';
+                    return;
+                }
                 this.$store.dispatch('saveTask', { task: this.task, image: this.image});
             },
             deleteTask() {

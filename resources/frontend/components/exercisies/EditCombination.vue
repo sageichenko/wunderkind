@@ -95,6 +95,7 @@
                 comment: 'Добавьте ответ',
                 currentEditableInputIndex: 0,
                 isEditOpen: false,
+                fix: ''
             };
         },
         watch: {

@@ -102,8 +102,10 @@ const actions = {
                     saveImg(props.image, response.data.id);
                 }
                 console.log('response save task', response.data);
+                commit('setServerResponse', 'Задание сохранено!');
             }.bind(this))
             .catch(function (error) {
+                commit('setServerResponse', 'Что-то пошло не так, попробуйте позже!');
                 console.log('error save task', error);
             });
     },
@@ -114,9 +116,11 @@ const actions = {
             }
         })
             .then(function (response) {
+                commit('setServerResponse', 'Задание удалено!');
                 console.log('response delete task', response.data);
             })
             .catch(function (error) {
+                commit('setServerResponse', 'Что-то пошло не так, попробуйте позже!');
                 console.log('error delete task', error);
             });
     },
@@ -125,8 +129,6 @@ const actions = {
                 headers: { Authorization: `Bearer ${localStorage.usertoken}` }
             }
         ).then(response => {
-             console.log('/api/profile', response.data.user)
-            //return res.data
             commit('setUser', response.data.user);
         })
         .catch(err => {

@@ -93,7 +93,6 @@
             },
             updateAccess(newValue) {
                 this.teacher = newValue === 'teacher';
-                console.log(this.teacher);
             }
         },
     }

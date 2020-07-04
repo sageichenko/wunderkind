@@ -3,6 +3,7 @@ const state = {
     task: {},
     currentUser: {},
     categories: [],
+    serverResponse: ''
 }
 
 export default state;

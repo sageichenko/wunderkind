@@ -11,5 +11,8 @@ const actions = {
     setUser: ( state, user ) => {
         state.currentUser = user;
     },
+    setServerResponse: ( state, serverResponse) => {
+        state.serverResponse = serverResponse;
+    }
 };
 export default actions;

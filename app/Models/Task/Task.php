@@ -40,22 +40,25 @@ class Task extends Model
         ];
     }
 
+    // функция сохранения
     public function saveTask($task) {
         $taskId = null;
-
+// проверка на наличие поля, означающего, что пришли новые данные для существующего задания
         if (property_exists($task,'id')) {
             $category = Category::find($task->categoryId);
-
-            $this::find($task->id)->update([
+// если задание существует, то для него обновляются поля, а также связь с одной из категорий
+            $curTask = $this::find($task->id);
+            $curTask->update([
                 'title' => $task->title,
                 'exercises' => $task->exercises,
                 'categoryImg' => $task->categoryImg,
-            ]);;
-
-            $this::find($task->id)->category()->associate($category);
+            ]);
+            $curTask->category()->associate($category);
+            $curTask->save();
 
             $taskId = $task->id;
         } else {
+// иначе создается новое задание, и новые связи
             $newTask = $this::create([
                 'title' => $task->title,
                 'exercises' => $task->exercises,
@@ -73,6 +76,7 @@ class Task extends Model
 
         return $taskId;
     }
+
 
     public function saveImg($fileName, $id) {
         $this::find($id)->update([

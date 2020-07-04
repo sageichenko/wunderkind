@@ -17,12 +17,14 @@ class TaskController extends Controller {
         return response()->json($items, 200);
     }
 
+    // функция, возвращающая задания определенной категории
     public function filterTaskList(Request $request){
+// получение модели категории
         $category = Category::find($request->all()['categoryId']);
-
+// извлеченение ассоциированных заданий
         $tasks = $category->tasks()->get();
         $items = [];
-
+// формирование результирующих данных
         foreach ($tasks as $key => $value) {
             if ($value['title'] && $value['exercises']) {
                 array_push($items, [
@@ -36,6 +38,7 @@ class TaskController extends Controller {
 
         return response()->json($items, 200);
     }
+
 
     public function task(Request $request){
         $tasks = new Task();
@@ -63,7 +66,6 @@ class TaskController extends Controller {
         var_dump($request->all());
 
         if ($request->hasFile('image')) {
-            var_dump('has file');
             $image = $request->file('image');
             $fileName = time() . '.' . $image->getClientOriginalExtension();
             Image::make($image)->resize(300, 300)->save(public_path('uploads\\tasks\\' . $fileName));

@@ -26,7 +26,7 @@
             <div class="form__row">
                 <div class="text-input">
                     <input
-                        type="text"
+                        type="password"
                         name="password"
                         v-model="password"
                         class="text-input__field"
